@@ -42,7 +42,10 @@ public class AscendingNode {
         return this.parent;
     }
 
-
+    /**
+     *  Get the root of the current node
+     * @return root
+     */
     protected AscendingNode getRoot(){
         if(!this.hasParent()){
             return this;
@@ -58,7 +61,7 @@ public class AscendingNode {
      */
 
     /**
-     *  set a new value (useless?)
+     *  set a new value
      * @param value
      */
     protected void setValue(Integer value){
@@ -78,11 +81,19 @@ public class AscendingNode {
      * VERIFICATIONS
      */
 
+    /**
+     *  Check whether the current node is the root
+     * @return
+     */
     protected boolean isRoot(){
         return !hasParent();
     }
 
-     private boolean hasParent(){
+    /**
+     *  Check whether the current node has a parent
+     * @return
+     */
+     protected boolean hasParent(){
         return this.parent != null;
      }
 }

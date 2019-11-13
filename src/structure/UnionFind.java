@@ -8,11 +8,20 @@ public class UnionFind {
 
     private Collection<AscendingNode> idSet;
 
+    /**
+     *  Constructor
+     * @param idSet
+     */
     public UnionFind(ArrayList<AscendingNode> idSet){
         this.idSet = idSet;
     }
 
-    protected AscendingNode find(AscendingNode node){
+    /**
+     * Find the root of the current node
+     * @param node
+     * @return root
+     */
+    private AscendingNode find(AscendingNode node){
         if(node.getParent() == node){
             return node;
         }
@@ -21,7 +30,12 @@ public class UnionFind {
         }
     }
 
-    protected void union(AscendingNode node1, AscendingNode node2){
+    /**
+     * Naive implementation of union (based on previous TD)
+     * @param node1
+     * @param node2
+     */
+    private void union(AscendingNode node1, AscendingNode node2){
         AscendingNode parent1 = find(node1);
         AscendingNode parent2 = find(node2);
 
@@ -35,6 +49,7 @@ public class UnionFind {
         }
         else{
             parent1.setParent(parent2);
+            parent2.setValue(parent2.getValue()+1);
         }
     }
 
