@@ -1,5 +1,7 @@
 package structure;
 
+import com.sun.tools.example.debug.expr.ASCII_UCodeESC_CharStream;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +24,7 @@ public class UnionFind {
      * @return root
      */
     private AscendingNode find(AscendingNode node){
-        if(node.getParent() == node){
+        if(node.getParent() == null){
             return node;
         }
         else{
@@ -35,22 +37,32 @@ public class UnionFind {
      * @param node1
      * @param node2
      */
-    private void union(AscendingNode node1, AscendingNode node2){
+    private AscendingNode union(AscendingNode node1, AscendingNode node2){
         AscendingNode parent1 = find(node1);
         AscendingNode parent2 = find(node2);
 
         if(parent1 != parent2){
-            if(parent1.getValue() < parent2.getValue()){
+            if(getNodeAmount(parent1) < getNodeAmount(parent2)){
                 parent1.setParent(parent2);
+                return parent2;
             }
             else{
                 parent2.setParent(parent1);
+                return parent1;
             }
         }
         else{
-            parent1.setParent(parent2);
-            parent2.setValue(parent2.getValue()+1);
+            return parent1;
         }
+    }
+    private int getNodeAmount(AscendingNode root){
+        int accu = 1;
+        for(AscendingNode n :idSet){
+            if(n.getRoot() == root){
+                accu++;
+            }
+        }
+        return accu;
     }
 
 }
