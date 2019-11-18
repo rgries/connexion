@@ -1,20 +1,15 @@
 package structure;
 
-import com.sun.tools.example.debug.expr.ASCII_UCodeESC_CharStream;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
 
 public class UnionFind {
 
-    private Collection<AscendingNode> idSet;
+    private AscendingNode[] idSet;
 
     /**
      *  Constructor
      * @param idSet
      */
-    public UnionFind(ArrayList<AscendingNode> idSet){
+    public UnionFind(AscendingNode[] idSet){
         this.idSet = idSet;
     }
 
@@ -23,12 +18,14 @@ public class UnionFind {
      * @param node
      * @return root
      */
-    private AscendingNode find(AscendingNode node){
+    public AscendingNode find(AscendingNode node){
+
         if(node.getParent() == null){
             return node;
         }
         else{
-            return find(node.getParent());
+            node.setParent(find(node.getParent()));
+            return node.getParent();
         }
     }
 
@@ -37,17 +34,19 @@ public class UnionFind {
      * @param node1
      * @param node2
      */
-    private AscendingNode union(AscendingNode node1, AscendingNode node2){
+    public AscendingNode union(AscendingNode node1, AscendingNode node2){
         AscendingNode parent1 = find(node1);
         AscendingNode parent2 = find(node2);
 
         if(parent1 != parent2){
             if(getNodeAmount(parent1) < getNodeAmount(parent2)){
                 parent1.setParent(parent2);
+                idSet[parent1.getValue()-1] = parent2;
                 return parent2;
             }
             else{
                 parent2.setParent(parent1);
+                idSet[parent2.getValue()-1] = parent1;
                 return parent1;
             }
         }
@@ -56,9 +55,9 @@ public class UnionFind {
         }
     }
     private int getNodeAmount(AscendingNode root){
-        int accu = 1;
-        for(AscendingNode n :idSet){
-            if(n.getRoot() == root){
+        int accu = 0;
+        for(int i=0; i <this.idSet.length; i++){
+            if(root.getValue() == this.idSet[i].getRoot().getValue()){
                 accu++;
             }
         }
