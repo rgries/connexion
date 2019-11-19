@@ -1,11 +1,8 @@
 package structure;
 
 
-import java.util.Collection;
-import java.util.List;
-
 public class AscendingNode {
-    private Integer value;
+    private int value;
     private AscendingNode parent;
 
     /**
@@ -19,6 +16,7 @@ public class AscendingNode {
     }
 
 
+
     /**
      * GETTERS
      */
@@ -27,7 +25,7 @@ public class AscendingNode {
      * get value of current node
      * @return value
      */
-    protected Integer getValue(){
+    public int getValue(){
         return this.value;
     }
 
@@ -35,9 +33,10 @@ public class AscendingNode {
      * get parent of current node
      * @return parent
      */
-    protected AscendingNode getParent(){
-        if(this.parent == null){
-            throw new NullPointerException("This unionFind.node has no parent.");
+    public AscendingNode getParent(){
+        if(!this.hasParent()){
+            this.setParent(this);
+            System.out.println(this.getValue()+" -- "+this.getParent().getValue());
         }
         return this.parent;
     }
@@ -46,12 +45,12 @@ public class AscendingNode {
      *  Get the root of the current node
      * @return root
      */
-    protected AscendingNode getRoot(){
-        if(!this.hasParent()){
+    public AscendingNode getRoot(){
+        if(this.getParent() == null){
             return this;
         }
         else{
-            return getParent().getRoot();
+            return this.getParent().getRoot();
         }
 
     }
@@ -64,7 +63,7 @@ public class AscendingNode {
      *  set a new value
      * @param value
      */
-    protected void setValue(Integer value){
+    protected void setValue(int value){
         this.value = value;
     }
 
@@ -94,6 +93,6 @@ public class AscendingNode {
      * @return
      */
      protected boolean hasParent(){
-        return this.parent != null;
+        return this.parent != this;
      }
 }
