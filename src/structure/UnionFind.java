@@ -29,6 +29,16 @@ public class UnionFind {
     }
 
     /**
+     * Find the root of a node known by its coordinate
+     * @param x
+     * @param y
+     * @return root
+     */
+    public AscendingNode find(int x, int y){
+
+    }
+
+    /**
      * Naive implementation of union (based on previous TD)
      * @param node1
      * @param node2

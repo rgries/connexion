@@ -16,10 +16,10 @@ public class Player {
 
     public int[][] getGroupsOf(int x, int y){
         //TODO
-        //AscendingNode a = new AscendingNode()
+        AscendingNode a = new AscendingNode()
         AscendingNode parent;
         for(UnionFind u: groups){
-            //if(u.find() != null){
+            if(u.find() != null){
 
             }
         }

@@ -4,7 +4,8 @@ package structure;
 public class AscendingNode {
     private int value;
     private AscendingNode parent;
-
+    private int x;
+    private int y;
 
     /**
      * Constructor
@@ -15,10 +16,9 @@ public class AscendingNode {
     public AscendingNode(Integer value, AscendingNode parent){
         this.value = value;
         this.parent = parent;
-
+        this.x = x;
+        this.y = y;
     }
-
-
 
     /**
      * GETTERS
@@ -42,6 +42,14 @@ public class AscendingNode {
             System.out.println(this.getValue()+" -- "+this.getParent().getValue());
         }
         return this.parent;
+    }
+
+    /**
+     *
+     * @return int[2] containing (x,y)
+     */
+    public int[] getPoint(){
+        return new int[] {x,y};
     }
 
     /**
