@@ -5,14 +5,17 @@ public class AscendingNode {
     private int value;
     private AscendingNode parent;
 
+
     /**
      * Constructor
      * @param value
      * @param parent
+
      */
     public AscendingNode(Integer value, AscendingNode parent){
         this.value = value;
         this.parent = parent;
+
     }
 
 

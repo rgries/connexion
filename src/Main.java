@@ -1,5 +1,16 @@
 import structure.*;
 
+//parse for '--test'
+//parse for a file in args?
+//else:
+
+//prompt for n and k
+
+
+//TODO
+//create game, players and board
+//game loop
+
 public class Main {
     public static void main(String [] args){
         testingUnionFind();
@@ -35,6 +46,7 @@ public class Main {
         System.out.println("********");
 
         unionFind.union(a[3],a[6]);
+
 
         for(int i = 0; i< a.length; i++){
             if(a[i] != null) System.out.println(i+1 +" : " + a[i].getValue());

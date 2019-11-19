@@ -43,7 +43,7 @@ public class Board {
 
     public Board RemplirGrilleAleatoire(int n, int k){
         //TODO exception when n not an int or negative.
-        //TODO should be create by Game instead
+        //TODO maybe should be create by Game instead
         Board b = new Board();
         b.n = n;
         b.k = k;

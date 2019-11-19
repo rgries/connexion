@@ -1,3 +1,4 @@
+import structure.AscendingNode;
 import structure.UnionFind;
 
 import java.util.ArrayList;
@@ -12,7 +13,16 @@ public class Player {
     private ArrayList<UnionFind> groups;
 
 
+
     public int[][] getGroupsOf(int x, int y){
+        //TODO
+        //AscendingNode a = new AscendingNode()
+        AscendingNode parent;
+        for(UnionFind u: groups){
+            //if(u.find() != null){
+
+            }
+        }
 
     }
 }

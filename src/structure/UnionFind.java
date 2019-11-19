@@ -1,6 +1,5 @@
 package structure;
 
-
 public class UnionFind {
 
     private AscendingNode[] idSet;
