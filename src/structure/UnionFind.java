@@ -18,15 +18,26 @@ public class UnionFind {
      * @param node
      * @return root
      */
-    public AscendingNode find(AscendingNode node){
 
-        if(node.getParent() == null){
+
+
+    public AscendingNode find(AscendingNode node, int i){
+        if(node.getParent() == node){
             return node;
         }
         else{
-            node.setParent(find(node.getParent()));
+            node.setParent(find(node.getParent(),search(node.getParent())));
+            this.idSet[i] = node.getParent();
             return node.getParent();
         }
+    }
+
+    private int search(AscendingNode node){
+        for(int i=0; i<this.idSet.length; i++)
+        if(this.idSet[i] == node){
+            return i;
+        }
+        return -1;
     }
 
     /**
@@ -35,8 +46,8 @@ public class UnionFind {
      * @param node2
      */
     public AscendingNode union(AscendingNode node1, AscendingNode node2){
-        AscendingNode parent1 = find(node1);
-        AscendingNode parent2 = find(node2);
+        AscendingNode parent1 = find(node1,search(node1));
+        AscendingNode parent2 = find(node2,search(node1));
 
         if(parent1 != parent2){
             if(getNodeAmount(parent1) < getNodeAmount(parent2)){

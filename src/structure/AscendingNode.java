@@ -3,18 +3,29 @@ package structure;
 
 public class AscendingNode {
     private int value;
+
     private AscendingNode parent;
 
     /**
      * Constructor
+     *
      * @param value
      * @param parent
      */
-    public AscendingNode(Integer value, AscendingNode parent){
+    public AscendingNode(Integer value, AscendingNode parent) {
         this.value = value;
         this.parent = parent;
     }
 
+    /**
+     * Constructor as root
+     *
+     * @param value
+     */
+    public AscendingNode(Integer value) {
+        this.value = value;
+        setParent(this);
+    }
 
 
     /**
@@ -23,33 +34,31 @@ public class AscendingNode {
 
     /**
      * get value of current node
+     *
      * @return value
      */
-    public int getValue(){
+    public int getValue() {
         return this.value;
     }
 
     /**
      * get parent of current node
+     *
      * @return parent
      */
-    public AscendingNode getParent(){
-        if(!this.hasParent()){
-            this.setParent(this);
-            System.out.println(this.getValue()+" -- "+this.getParent().getValue());
-        }
+    public AscendingNode getParent() {
         return this.parent;
     }
 
     /**
-     *  Get the root of the current node
+     * Get the root of the current node
+     *
      * @return root
      */
-    public AscendingNode getRoot(){
-        if(this.getParent() == null){
+    public AscendingNode getRoot() {
+        if (this.getParent() == this) {
             return this;
-        }
-        else{
+        } else {
             return this.getParent().getRoot();
         }
 
@@ -60,18 +69,20 @@ public class AscendingNode {
      */
 
     /**
-     *  set a new value
+     * set a new value
+     *
      * @param value
      */
-    protected void setValue(int value){
+    protected void setValue(int value) {
         this.value = value;
     }
 
     /**
      * set a new parent
+     *
      * @param parent
      */
-    protected void setParent(AscendingNode parent){
+    protected void setParent(AscendingNode parent) {
         this.parent = parent;
     }
 
@@ -81,18 +92,12 @@ public class AscendingNode {
      */
 
     /**
-     *  Check whether the current node is the root
+     * Check whether the current node is the root
+     *
      * @return
      */
-    protected boolean isRoot(){
-        return !hasParent();
+    protected boolean isRoot() {
+        return this.parent == this;
     }
-
-    /**
-     *  Check whether the current node has a parent
-     * @return
-     */
-     protected boolean hasParent(){
-        return this.parent != this;
-     }
 }
+
