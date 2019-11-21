@@ -2,7 +2,10 @@ package structure;
 
 
 public class AscendingNode {
+
     private int value;
+    private int x;
+    private int y;
 
     private AscendingNode parent;
     private int x;
@@ -12,11 +15,15 @@ public class AscendingNode {
      * Constructor
      *
      * @param value
+     * @param x
+     * @param y
      * @param parent
 
      */
-    public AscendingNode(Integer value, AscendingNode parent) {
+    public AscendingNode(int value,int x, int y, AscendingNode parent) {
         this.value = value;
+        this.x = x;
+        this.y = y;
         this.parent = parent;
         this.x = x;
         this.y = y;
@@ -27,8 +34,10 @@ public class AscendingNode {
      *
      * @param value
      */
-    public AscendingNode(Integer value) {
+    public AscendingNode(int value,int x,int y) {
         this.value = value;
+        this.x = x;
+        this.y = y;
         setParent(this);
     }
 
@@ -43,6 +52,23 @@ public class AscendingNode {
      */
     public int getValue() {
         return this.value;
+    }
+
+    /**
+     * get value of current node
+     *
+     * @return value
+     */
+    public int getX() {
+        return this.x;
+    }
+    /**
+     * get value of current node
+     *
+     * @return value
+     */
+    public int getY() {
+        return this.y;
     }
 
     /**
@@ -83,15 +109,6 @@ public class AscendingNode {
     /**
      * SETTERS
      */
-
-    /**
-     * set a new value
-     *
-     * @param value
-     */
-    protected void setValue(int value) {
-        this.value = value;
-    }
 
     /**
      * set a new parent
