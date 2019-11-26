@@ -6,10 +6,8 @@ public class AscendingNode {
     private int value;
     private int x;
     private int y;
-
     private AscendingNode parent;
-    private int x;
-    private int y;
+
 
     /**
      * Constructor

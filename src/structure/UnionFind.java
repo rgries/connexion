@@ -17,9 +17,6 @@ public class UnionFind {
      * @param node
      * @return root
      */
-
-
-
     public AscendingNode find(AscendingNode node, int i, int j){
         if(node.getParent() == node){
             return node;
@@ -55,7 +52,11 @@ public class UnionFind {
      * @return root
      */
     public AscendingNode find(int x, int y){
-
+        AscendingNode res = idSet[x][y];
+        while (res != res.getParent()) {
+            res = res.getParent();
+        }
+        return res;
     }
 
     /**

@@ -25,10 +25,11 @@ public class Game {
             res[1][0] = y;
             return res;
         } else if (Board.getColor(x, y) == Board.P1_COLOR) {   //P1
-            return player1.getGroupsOf(x,y);
+            return player1.getGroupOf(x,y);
         } else {    //P2
-            return player2.getGroupsOf(x,y);
+            return player2.getGroupOf(x,y);
         }
     }
+
 }
 
