@@ -37,7 +37,7 @@ public class Main {
         System.out.println("n : parent");
         for(int i = 0; i< a.length; i++){
             for(int j = 0; j< a.length; j++){
-            if(a[i] != null) System.out.println("(" +i +", "+j + ") : " + a[i][j].getValue());
+            if(a[i] != null) System.out.println("(" +i +", "+j + ") : " + a[i][j].getId());
             }
         }
         System.out.println("********");
@@ -46,7 +46,7 @@ public class Main {
 
             for(int i = 0; i< a.length; i++) {
                 for (int j = 0; j < a.length; j++) {
-                    if (a[i] != null) System.out.println("(" +i +", "+j + ") : " + a[i][j].getValue());
+                    if (a[i] != null) System.out.println("(" +i +", "+j + ") : " + a[i][j].getId());
                 }
             }
 
