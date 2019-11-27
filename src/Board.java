@@ -76,32 +76,45 @@ public class Board {
         return b;
     }
 
-    //TODO
+    /**
+     *  Fill the current board with informations found in a given file
+     * @param  f  a file givent to extract its informations
+     * @return full
+     * @throws IOException
+     */
    public Board RemplirGrilleFicher(File f) throws IOException {
         Board b = new Board();
         Scanner currentLine =  new Scanner(f);
         String l = currentLine.nextLine();
         Scanner currentValue = new Scanner(l);
 
+       // Check n value
         if(!currentValue.hasNextInt()){
             throw new IllegalArgumentException("Incorrect next integer");
-        }else b.n = currentValue.nextInt();
+        }else {
+            b.n = currentValue.nextInt();
+        }
 
-       b.value = new int[b.n][b.n];
-
+       // Check k value
        if(!currentValue.hasNextInt()){
            throw new IllegalArgumentException("Incorrect next integer");
-       }else b.k = currentValue.nextInt();
+       }else {
+           b.k = currentValue.nextInt();
+       }
+       // Initialize color and score boards
+       b.value = new int[b.n][b.n];
+       b.color = new int[b.n][b.n];
 
         int i = 0;
         int j = 0;
         int k = 0;
+
         //Part 1:  Fill boards
-        // Board 1: Plateau des points
-        while(currentLine.hasNextLine() && i<b.n){   //parcours chaque lignes du fichier
+        // Board 1: Score board
+        while(currentLine.hasNextLine() && i<b.n){           //Browse each line of the current file
             Scanner currentVal = new Scanner(currentLine.nextLine());
-             while(currentVal.hasNextInt()){
-                 b.value[i][j] = currentVal.nextInt();
+             while(currentVal.hasNextInt() && i<b.n){                //Browse each value of the current line
+                 b.value[i][j] = currentVal.nextInt();               // Fill score board
                  j++;
              }
              i++;
@@ -109,18 +122,16 @@ public class Board {
         }
         i=0;
 
-       b.color = new int[b.n][b.n];
-
        // Board 2: Plateau des couleurs
        AscendingNode[][] coloredNode = new AscendingNode[b.n][b.n];
 
-       while(currentLine.hasNextLine() && i<b.n+b.k){   //parcours chaque lignes du fichier
+       while(currentLine.hasNextLine() && i<b.n+b.k){                   //Browse each line of the file
 
            Scanner currentVal = new Scanner(currentLine.nextLine());
-           while(currentVal.hasNextInt()){
-               b.color[i][j] = currentVal.nextInt();
-               coloredNode[i][j] = new AscendingNode(k,i,j);
-               System.out.printf(" "+b.color[i][j]);  //To be removed
+           while(currentVal.hasNextInt() && j<b.n+b.k){                 //Browse each color number of the current line
+               b.color[i][j] = currentVal.nextInt();                    // Fill color board
+               coloredNode[i][j] = new AscendingNode(k,i,j);            // Create AscendingNode for each color and fill the future idParentSet
+               System.out.printf(" "+b.color[i][j]);                    //Print infos : To be removed
                j++;
                k++;
            }
@@ -128,25 +139,26 @@ public class Board {
            j=0;
            System.out.println(" ");  //To be removed
        }
-
+       //Create unionFind using idParentSet pre-filled
        b.scoring = new UnionFind(coloredNode);
+
        //Part 2: Union between compatible neighbor
        System.out.println("Printing  map of current connected color...");
        for(i=0;i<b.n; ++i){
            for(j=0;j<b.n; ++j){
-               if(i!=0 && color[i][j]==color[i-1][j]){
+               if(i!=0 && color[i][j]==color[i-1][j]){          // Union between a node and its left neighbor if their share the same color value
                    b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i-1][j]);
                }
-               if(i!=b.n-1 && color[i][j]==color[i+1][j]){
+               if(i!=b.n-1 && color[i][j]==color[i+1][j]){      // Union between a node and its right neighbor if their share the same color value
                    b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i+1][j]);
                }
-               if(j!=0 && color[i][j]==color[i][j-1]){
+               if(j!=0 && color[i][j]==color[i][j-1]){          // Union between a node and its lower neighbor if their share the same color value
                    b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i][j-1]);
                }
-               if(j!=b.n-1 && color[i][j]==color[i][j+1]){
+               if(j!=b.n-1 && color[i][j]==color[i][j+1]){      // Union between a node and its upper neighbor if their share the same color value
                    b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i][j+1]);
                }
-               System.out.printf("(united="+b.scoring.getParentIdSet()[i][j].getId()+" ; col="+b.color[i][j]+" ; val="+b.value[i][j]+") ");  //To be removed
+               System.out.printf("(united="+b.scoring.getParentIdSet()[i][j].getId()+" ; col="+b.color[i][j]+" ; val="+b.value[i][j]+") ");  // print infos: To be removed
            }
            System.out.println("  ");
        }

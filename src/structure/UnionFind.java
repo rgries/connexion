@@ -18,9 +18,6 @@ public class UnionFind {
      * @param node
      * @return root
      */
-
-
-
     public AscendingNode find(AscendingNode node,int[] i){
         if(node.getParent() == node){
             return node;
@@ -44,7 +41,7 @@ public class UnionFind {
     }
 
     /**
-     * Naive implementation of union (based on previous TD)
+     * Implementation of union using path compression
      * @param node1
      * @param node2
      */
@@ -68,6 +65,12 @@ public class UnionFind {
             return parent1;
         }
     }
+
+    /**
+     *  Get the amount of node linked to one root
+     * @param root
+     * @return amount of children of a root
+     */
     private int getNodeAmount(AscendingNode root){
         int accu = 0;
         for(int i = 0; i <this.parentIdSet.length; i++){
@@ -80,6 +83,10 @@ public class UnionFind {
         return accu;
     }
 
+    /**
+     * get the parentIdSet of unionFind
+     * @return parentIdSet
+     */
     public AscendingNode[][] getParentIdSet(){
         return parentIdSet;
     }
