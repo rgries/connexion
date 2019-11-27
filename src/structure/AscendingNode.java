@@ -15,6 +15,7 @@ public class AscendingNode {
      * @param id
      * @param x
      * @param y
+     * @param color
      * @param parent
      */
     public AscendingNode(int id,int x, int y, AscendingNode parent) {

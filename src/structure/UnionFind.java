@@ -3,14 +3,14 @@ package structure;
 
 public class UnionFind {
 
-    private AscendingNode[][] idSet;
+    private AscendingNode[][] parentIdSet;
 
     /**
      *  Constructor
-     * @param idSet
+     * @param parentIdSet
      */
-    public UnionFind(AscendingNode[][] idSet){
-        this.idSet = idSet;
+    public UnionFind(AscendingNode[][] parentIdSet){
+        this.parentIdSet = parentIdSet;
     }
 
     /**
@@ -27,15 +27,15 @@ public class UnionFind {
         }
         else{
             node.setParent(find(node.getParent(), search(node.getParent())));
-            this.idSet[i[0]][i[1]] = node.getParent();
+            this.parentIdSet[i[0]][i[1]] = node.getParent();
             return node.getParent();
         }
     }
 
     private int[] search(AscendingNode node) {
-        for (int i = 0; i < this.idSet.length; i++){
-            for (int j = 0; j < this.idSet.length; j++) {
-                if (this.idSet[i][j] == node) {
+        for (int i = 0; i < this.parentIdSet.length; i++){
+            for (int j = 0; j < this.parentIdSet.length; j++) {
+                if (this.parentIdSet[i][j] == node) {
                     return new int[]{i, j};
                 }
             }
@@ -55,12 +55,12 @@ public class UnionFind {
         if(parent1 != parent2){
             if(getNodeAmount(parent1) < getNodeAmount(parent2)){
                 parent1.setParent(parent2);
-                idSet[parent1.getX()][parent1.getY()] = parent2;
+                parentIdSet[parent1.getX()][parent1.getY()] = parent2;
                 return parent2;
             }
             else{
                 parent2.setParent(parent1);
-                idSet[parent2.getX()][parent2.getY()] = parent1;
+                parentIdSet[parent2.getX()][parent2.getY()] = parent1;
                 return parent1;
             }
         }
@@ -70,14 +70,18 @@ public class UnionFind {
     }
     private int getNodeAmount(AscendingNode root){
         int accu = 0;
-        for(int i=0; i <this.idSet.length; i++){
-            for(int j=0; j <this.idSet.length; j++){
-                if(root.getId() == this.idSet[i][j].getRoot().getId()){
+        for(int i = 0; i <this.parentIdSet.length; i++){
+            for(int j = 0; j <this.parentIdSet.length; j++){
+                if(root.getId() == this.parentIdSet[i][j].getRoot().getId()){
                     accu++;
                 }
             }
         }
         return accu;
+    }
+
+    public AscendingNode[][] getParentIdSet(){
+        return parentIdSet;
     }
 
 }

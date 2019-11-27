@@ -11,16 +11,16 @@ public class Main {
     }
 
     private static void testingUnionFind() {
-        AscendingNode root1 = new AscendingNode(1,0,0,0);
-        AscendingNode child1 = new AscendingNode(2,0,1,0, root1);
-        AscendingNode child2 = new AscendingNode(3,0,2,0,root1);
-        AscendingNode child3 = new AscendingNode(4,1,0,0, child1);
-        AscendingNode child4 = new AscendingNode(5,1,1,0, child3);
+        AscendingNode root1 = new AscendingNode(1,0,0);
+        AscendingNode child1 = new AscendingNode(2,0,1, root1);
+        AscendingNode child2 = new AscendingNode(3,0,2,root1);
+        AscendingNode child3 = new AscendingNode(4,1,0, child1);
+        AscendingNode child4 = new AscendingNode(5,1,1, child3);
 
-        AscendingNode root2 = new AscendingNode(6,1,2,0);
-        AscendingNode child5 = new AscendingNode(7,2,0,0, root2);
-        AscendingNode child6 = new AscendingNode(8,2,1,0, root2);
-        AscendingNode child7 = new AscendingNode(9,2,2,0, child6);
+        AscendingNode root2 = new AscendingNode(6,1,2);
+        AscendingNode child5 = new AscendingNode(7,2,0, root2);
+        AscendingNode child6 = new AscendingNode(8,2,1, root2);
+        AscendingNode child7 = new AscendingNode(9,2,2, child6);
 
         AscendingNode[][] a = new AscendingNode[3][3];
         a[0][0] = root1.getParent();

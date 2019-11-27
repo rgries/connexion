@@ -119,7 +119,7 @@ public class Board {
            Scanner currentVal = new Scanner(currentLine.nextLine());
            while(currentVal.hasNextInt()){
                b.color[i][j] = currentVal.nextInt();
-               coloredNode[i][j] = new AscendingNode(k,i,j,b.color[i][j]);
+               coloredNode[i][j] = new AscendingNode(k,i,j);
                System.out.printf(" "+b.color[i][j]);  //To be removed
                j++;
                k++;
@@ -146,9 +146,9 @@ public class Board {
                if(j!=b.n-1 && color[i][j]==color[i][j+1]){
                    b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i][j+1]);
                }
-               System.out.printf(" "+b.scoring.getParentIdSet()[i][j].getId());  //To be removed
+               System.out.printf("(united="+b.scoring.getParentIdSet()[i][j].getId()+" ; col="+b.color[i][j]+" ; val="+b.value[i][j]+") ");  //To be removed
            }
-           System.out.println("");
+           System.out.println("  ");
        }
         return b;
     }
