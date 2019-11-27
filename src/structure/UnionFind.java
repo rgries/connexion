@@ -21,32 +21,26 @@ public class UnionFind {
 
 
 
-    public AscendingNode find(AscendingNode node, int i, int j){
+    public AscendingNode find(AscendingNode node,int[] i){
         if(node.getParent() == node){
             return node;
         }
         else{
-            node.setParent(find(node.getParent(),searchX(node.getParent()), searchY(node.getParent())));
-            this.idSet[i][j] = node.getParent();
+            node.setParent(find(node.getParent(), search(node.getParent())));
+            this.idSet[i[0]][i[1]] = node.getParent();
             return node.getParent();
         }
     }
 
-    private int searchX(AscendingNode node){
-        for(int i=0; i<this.idSet.length; i++)
-            for(int j=0; j<this.idSet.length; j++)
-                if(this.idSet[i][j] == node){
-                    return i;
+    private int[] search(AscendingNode node) {
+        for (int i = 0; i < this.idSet.length; i++){
+            for (int j = 0; j < this.idSet.length; j++) {
+                if (this.idSet[i][j] == node) {
+                    return new int[]{i, j};
                 }
-        return -1;
-    }
-    private int searchY(AscendingNode node){
-        for(int i=0; i<this.idSet.length; i++)
-            for(int j=0; j<this.idSet.length; j++)
-                if(this.idSet[i][j] == node){
-                    return j;
-                }
-        return -1;
+            }
+        }
+        return new int[] {-1,-1};
     }
 
     /**
@@ -55,8 +49,8 @@ public class UnionFind {
      * @param node2
      */
     public AscendingNode union(AscendingNode node1, AscendingNode node2){
-        AscendingNode parent1 = find(node1,searchX(node1),searchY(node1));
-        AscendingNode parent2 = find(node2,searchX(node2),searchY(node2));
+        AscendingNode parent1 = find(node1,search(node1));
+        AscendingNode parent2 = find(node2,search(node2));
 
         if(parent1 != parent2){
             if(getNodeAmount(parent1) < getNodeAmount(parent2)){
@@ -66,8 +60,6 @@ public class UnionFind {
             }
             else{
                 parent2.setParent(parent1);
-                System.out.println(parent2.getX());
-                System.out.println(parent2.getY());
                 idSet[parent2.getX()][parent2.getY()] = parent1;
                 return parent1;
             }
@@ -80,7 +72,7 @@ public class UnionFind {
         int accu = 0;
         for(int i=0; i <this.idSet.length; i++){
             for(int j=0; j <this.idSet.length; j++){
-                if(root.getValue() == this.idSet[i][j].getRoot().getValue()){
+                if(root.getId() == this.idSet[i][j].getRoot().getId()){
                     accu++;
                 }
             }

@@ -3,7 +3,7 @@ package structure;
 
 public class AscendingNode {
 
-    private int value;
+    private int id;
     private int x;
     private int y;
 
@@ -12,13 +12,13 @@ public class AscendingNode {
     /**
      * Constructor
      *
-     * @param value
+     * @param id
      * @param x
      * @param y
      * @param parent
      */
-    public AscendingNode(int value,int x, int y, AscendingNode parent) {
-        this.value = value;
+    public AscendingNode(int id,int x, int y, AscendingNode parent) {
+        this.id = id;
         this.x = x;
         this.y = y;
         this.parent = parent;
@@ -27,10 +27,10 @@ public class AscendingNode {
     /**
      * Constructor as root
      *
-     * @param value
+     * @param id
      */
-    public AscendingNode(int value,int x,int y) {
-        this.value = value;
+    public AscendingNode(int id,int x,int y) {
+        this.id = id;
         this.x = x;
         this.y = y;
         setParent(this);
@@ -46,8 +46,8 @@ public class AscendingNode {
      *
      * @return value
      */
-    public int getValue() {
-        return this.value;
+    public int getId() {
+        return this.id;
     }
 
     /**
