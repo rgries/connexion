@@ -15,7 +15,6 @@ public class AscendingNode {
      * @param id
      * @param x
      * @param y
-     * @param color
      * @param parent
      */
     public AscendingNode(int id,int x, int y, AscendingNode parent) {
@@ -105,17 +104,5 @@ public class AscendingNode {
     }
 
 
-    /**
-     * VERIFICATIONS
-     */
-
-    /**
-     * Check whether the current node is the root
-     *
-     * @return
-     */
-    protected boolean isRoot() {
-        return this.parent == this;
-    }
 }
 

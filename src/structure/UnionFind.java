@@ -48,9 +48,11 @@ public class UnionFind {
     public AscendingNode union(AscendingNode node1, AscendingNode node2){
         AscendingNode parent1 = find(node1,search(node1));
         AscendingNode parent2 = find(node2,search(node2));
+        int nbNode1 = getNodeAmount(parent1);
+        int nbNode2 = getNodeAmount(parent2);
 
         if(parent1 != parent2){
-            if(getNodeAmount(parent1) < getNodeAmount(parent2)){
+            if(nbNode1 < nbNode2){
                 parent1.setParent(parent2);
                 parentIdSet[parent1.getX()][parent1.getY()] = parent2;
                 return parent2;
