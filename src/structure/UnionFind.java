@@ -73,7 +73,7 @@ public class UnionFind {
      * @param root
      * @return amount of children of a root
      */
-    private int getNodeAmount(AscendingNode root){
+    public int getNodeAmount(AscendingNode root){
         int accu = 0;
         for(int i = 0; i <this.parentIdSet.length; i++){
             for(int j = 0; j <this.parentIdSet.length; j++){

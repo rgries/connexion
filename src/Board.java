@@ -26,26 +26,46 @@ public class Board {
     private static int[][] value;
     private UnionFind scoring;
 
-
-    public int size(){
-        return n;
-    }
+    /**
+     * return current size of the board
+     * @return
+     */
     public int getN() {
         return n;
     }
 
+    /**
+     * get k value (k decide what is highest score possible in one case)
+     * @return
+     */
     public int getK() {
         return k;
     }
 
+    /**
+     * get calculated seed
+     * @return
+     */
     public long getSeed() {
         return seed;
     }
 
+    /**
+     * get color at coordinates (x,y)
+     * @param x
+     * @param y
+     * @return
+     */
     public static int getColor(int x, int y){
         return color[x][y];
     }
 
+    /**
+     * get value at coordinates (x,y)
+     * @param x
+     * @param y
+     * @return
+     */
     public static int getValue(int x, int y){
         return value[x][y];
     }
@@ -90,16 +110,22 @@ public class Board {
 
        // Check n value
         if(!currentValue.hasNextInt()){
-            throw new IllegalArgumentException("Incorrect next integer");
+            throw new IllegalArgumentException("Valeur suivante non valide");
         }else {
             b.n = currentValue.nextInt();
+            if(b.n <=0){
+                throw new IllegalArgumentException("Valeur N non valide (doit être supérieure ou égale à 1)");
+            }
         }
 
        // Check k value
        if(!currentValue.hasNextInt()){
-           throw new IllegalArgumentException("Incorrect next integer");
+           throw new IllegalArgumentException("Valeur suivante non valide.");
        }else {
            b.k = currentValue.nextInt();
+           if(b.k <=0){
+               throw new IllegalArgumentException("Valeur K non valide (doit être supérieure ou égale à 1)");
+           }
        }
        // Initialize color and score boards
        b.value = new int[b.n][b.n];
@@ -114,7 +140,11 @@ public class Board {
         while(currentLine.hasNextLine() && i<b.n){           //Browse each line of the current file
             Scanner currentVal = new Scanner(currentLine.nextLine());
              while(currentVal.hasNextInt() && i<b.n){                //Browse each value of the current line
+
                  b.value[i][j] = currentVal.nextInt();               // Fill score board
+                 if(b.value[i][j]<=0 || b.value[i][j]>b.k){
+                    throw new IllegalArgumentException("La valeur de la case ("+i+","+j+") doit être entre 1 et "+ b.k);
+                 }
                  j++;
              }
              i++;
@@ -130,6 +160,10 @@ public class Board {
            Scanner currentVal = new Scanner(currentLine.nextLine());
            while(currentVal.hasNextInt() && j<b.n+b.k){                 //Browse each color number of the current line
                b.color[i][j] = currentVal.nextInt();                    // Fill color board
+
+               if(b.color[i][j]<0 || b.color[i][j]>2){
+                   throw new IllegalArgumentException("La valeur de la case ("+i+","+j+") doit être entre 0 et 2");
+               }
                coloredNode[i][j] = new AscendingNode(k,i,j);            // Create AscendingNode for each color and fill the future idParentSet
                System.out.printf(" "+b.color[i][j]);                    //Print infos : To be removed
                j++;
@@ -143,31 +177,116 @@ public class Board {
        b.scoring = new UnionFind(coloredNode);
 
        //Part 2: Union between compatible neighbor
-       System.out.println("Printing  map of current connected color...");
-       for(i=0;i<b.n; ++i){
-           for(j=0;j<b.n; ++j){
-               if(i!=0 && color[i][j]==color[i-1][j]){          // Union between a node and its left neighbor if their share the same color value
-                   b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i-1][j]);
-               }
-               if(i!=b.n-1 && color[i][j]==color[i+1][j]){      // Union between a node and its right neighbor if their share the same color value
-                   b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i+1][j]);
-               }
-               if(j!=0 && color[i][j]==color[i][j-1]){          // Union between a node and its lower neighbor if their share the same color value
-                   b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i][j-1]);
-               }
-               if(j!=b.n-1 && color[i][j]==color[i][j+1]){      // Union between a node and its upper neighbor if their share the same color value
-                   b.scoring.union(b.scoring.getParentIdSet()[i][j],b.scoring.getParentIdSet()[i][j+1]);
-               }
-               System.out.printf("(united="+b.scoring.getParentIdSet()[i][j].getId()+" ; col="+b.color[i][j]+" ; val="+b.value[i][j]+") ");  // print infos: To be removed
-           }
-           System.out.println("  ");
-       }
-        return b;
+       b.connectColors();
+       return b;
     }
 
+    /**
+     *  Connect colors and print the board
+     */
+    public void connectColors() {
+        int i;
+        int j;
+        System.out.println("Affichage du plateau...");
+        for(i=0;i<this.n; ++i){
+            for(j=0;j<this.n; ++j){
+                neighborUnion(i, j);
+                System.out.printf("["+intToColor(color[i][j])+"("+i+";"+j+")] ");  // print infos: To be removed
+            }
+            System.out.println("  ");
+        }
+        System.out.println("Le plateau a rempli correctement.");
+    }
 
+    /**
+     *  Print the current board
+     */
+    public void printBoard() {
+        int i;
+        int j;
+        System.out.println("Affichage du plateau...");
+        for(i=0;i<this.n; ++i){
+            for(j=0;j<this.n; ++j){
+                System.out.printf("["+intToColor(color[i][j])+"("+i+";"+j+")] ");
+            }
+            System.out.println("  ");
+        }
+    }
 
+    /**
+     *  Print the current board
+     */
+    public void printSetBoard() {
+        System.out.println("Ensembles du plateau....");
+        for(int i=0;i<this.n; ++i){
+            for(int j=0;j<this.n; ++j){
+                System.out.printf("["+scoring.getParentIdSet()[i][j].getId()+"]");
+            }
+            System.out.println("  ");
+        }
+    }
+
+    /***
+     *  Check whether or not you can do union between a case and its neighbor (if it's not white
+     * @param x
+     * @param y
+     */
+    public void neighborUnion(int x, int y) {
+        if(color[x][y]!=0) {
+            // Union between a node and its left neighbor if their share the same color value
+            if (x != 0 && color[x][y] == color[x - 1][y]) {
+                this.scoring.union(this.scoring.getParentIdSet()[x][y], this.scoring.getParentIdSet()[x - 1][y]);
+            }
+            // Union between a node and its right neighbor if their share the same color value
+            if (x != this.n - 1 && color[x][y] == color[x + 1][y]) {
+                this.scoring.union(this.scoring.getParentIdSet()[x][y], this.scoring.getParentIdSet()[x + 1][y]);
+            }
+            // Union between a node and its lower neighbor if their share the same color value
+            if (y != 0 && color[x][y] == color[x][y - 1]) {
+                this.scoring.union(this.scoring.getParentIdSet()[x][y], this.scoring.getParentIdSet()[x][y - 1]);
+            }
+            // Union between a node and its upper neighbor if their share the same color value
+            if (y != this.n - 1 && color[x][y] == color[x][y + 1]) {
+                    this.scoring.union(this.scoring.getParentIdSet()[x][y], this.scoring.getParentIdSet()[x][y + 1]);
+            }
+        }
+    }
+
+    /**
+     * Change an int into the letter associated with its color
+     * For printing purpose
+     * @param color
+     * @return
+     */
+    public String intToColor(int color){
+        if(color == 1){
+            return "R";
+        }else if(color == 2){
+            return "B";
+        }
+        else{
+            return "W";
+        }
+
+    }
+
+    /**
+     * Change color of a case
+     * @param x
+     * @param y
+     * @param couleur
+     */
     public void colorerCase(int x, int y, int couleur){
         color[x][y] = couleur;
+    }
+
+    /**
+     * Get the size of the set  linked to the current case
+     * @param x
+     * @param y
+     * @return
+     */
+    public int getSetSize(int x, int y){
+        return this.scoring.getNodeAmount(this.scoring.getParentIdSet()[x][y]);
     }
 }
