@@ -17,8 +17,8 @@ public class Main {
     }
 
     private static void jouerDeuxHumains(Board b) {
-        Player p1 = new Player(1);
-        Player p2 = new Player(2);
+        Player p1 = new Player(b.P1_COLOR);
+        Player p2 = new Player(b.P2_COLOR);
         Game g = new Game(p1, p2, b);
 
         Player current = p1;

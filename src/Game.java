@@ -89,7 +89,7 @@ public class Game {
         for(int i=0; i<this.board.getN(); ++i){
             for(int j=0; j<this.board.getN(); ++j){
                 tmp = this.board.getSetSize(i,j);
-                if(Board.getColor(i,j)==1){
+                if(Board.getColor(i,j)==Board.P1_COLOR){
                     if(player1FinalSet < tmp){
                         player1FinalSet = tmp;
                         player1RootId = this.board.getScoring().getParentIdSet()[i][j].getId();
@@ -114,7 +114,7 @@ public class Game {
 
         for(int i=0; i<this.board.getN(); ++i){
             for(int j=0; j<this.board.getN(); ++j){
-                if(Board.getColor(i,j)==1){
+                if(Board.getColor(i,j)==Board.P1_COLOR){
                     if(player1RootId == this.board.getScoring().getParentIdSet()[i][j].getId()){
                        scoreP1 += Board.getValue(i,j);
                     }
@@ -200,7 +200,7 @@ public class Game {
         int white = 0;
         for(int i=0;i<this.board.getN(); ++i){
             for(int j=0;j<this.board.getN(); ++j){
-                if(Board.getColor(i, j)==0){
+                if(Board.getColor(i, j)==Board.EMPTY_COLOR){
                     white ++;
                 }
             }
@@ -287,7 +287,7 @@ public class Game {
             return false;
         }
         else{
-            if (Board.getColor(x, y) != 0) {
+            if (Board.getColor(x, y) != Board.EMPTY_COLOR) {
                 System.out.println("Cette case est déjà colorée, veuillez en choisir une autre.");
                 return false;
             }
@@ -321,30 +321,30 @@ public class Game {
             int i = 0;
             int j = 0;
             if(x+1<this.board.getN()){
-                if(Board.getColor(x+1,y) == 1){
+                if(Board.getColor(x+1,y) == Board.P1_COLOR){
                     i++;
-                }else if(Board.getColor(x+1,y) == 2){
+                }else if(Board.getColor(x+1,y) == Board.P2_COLOR){
                     j++;
                 }
             }
             if(y+1<this.board.getN()){
-                if(Board.getColor(x,y+1) == 1){
+                if(Board.getColor(x,y+1) == Board.P1_COLOR){
                     i++;
-                }else if(Board.getColor(x,y+1) == 2){
+                }else if(Board.getColor(x,y+1) == Board.P2_COLOR){
                     j++;
                 }
             }
             if(x-1>=0){
-                if(Board.getColor(x-1,y) == 1){
+                if(Board.getColor(x-1,y) == Board.P1_COLOR){
                     i++;
-                }else if(Board.getColor(x-1,y) == 2){
+                }else if(Board.getColor(x-1,y) == Board.P2_COLOR){
                     j++;
                 }
             }
             if(y-1>=0){
-                if(Board.getColor(x,y-1) == 1){
+                if(Board.getColor(x,y-1) == Board.P1_COLOR){
                     i++;
-                }else if(Board.getColor(x,y-1) == 2){
+                }else if(Board.getColor(x,y-1) == Board.P2_COLOR){
                     j++;
                 }
             }

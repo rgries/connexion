@@ -277,9 +277,9 @@ public class Board {
      * @return
      */
     public String intToColor(int color){
-        if(color == 1){
+        if(color == P1_COLOR){
             return "R";
-        }else if(color == 2){
+        }else if(color == P2_COLOR){
             return "B";
         }
         else{
