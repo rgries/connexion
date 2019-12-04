@@ -117,14 +117,12 @@ public class Game {
                 if(Board.getColor(i,j)==1){
                     if(player1RootId == this.board.getScoring().getParentIdSet()[i][j].getId()){
                        scoreP1 += Board.getValue(i,j);
-
                     }
                 }
                 else{
                     if(player2RootId == this.board.getScoring().getParentIdSet()[i][j].getId()){
                         scoreP2 += Board.getValue(i,j);
                     }
-
                 }
             }
         }
@@ -221,8 +219,26 @@ public class Game {
      * @param y
      */
     public void afficherComposante(int x, int y){
-        int[][] list = getGroupOf(x,y);
-        //TODO print
+        //int[][] list = getGroupOf(x,y); //pas compris comment utiliser
+        int color = Board.getColor(x,y);
+        System.out.println("Couleur de la composante: "+this.board.intToColor(color));
+        System.out.println("Composante: ");
+        if(color == Board.EMPTY_COLOR) {
+            System.out.println("("+x+","+y+")");
+        }
+        else{
+            int tmp = this.board.getScoring().getParentIdSet()[x][y].getId();
+            for (int i = 0; i<this.board.getN(); ++i) {
+                for (int j = 0; j<this.board.getN(); ++j) {
+                    if (Board.getColor(i, j) == color) {
+                        if (tmp == this.board.getScoring().getParentIdSet()[i][j].getId()) {
+                            System.out.printf("("+i+","+j+") ");
+                        }
+                    }
+                }
+                System.out.println(" ");
+            }
+        }
     }
 
     /**
@@ -237,7 +253,6 @@ public class Game {
             score = Board.getValue(x, y);
         }else {
             int tmp = this.board.getScoring().getParentIdSet()[x][y].getId();
-            System.out.println(tmp);
             for (int i = 0; i < this.board.getN(); ++i) {
                 for (int j = 0; j < this.board.getN(); ++j) {
                     if (Board.getColor(i, j) == color) {

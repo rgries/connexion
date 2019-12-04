@@ -16,21 +16,21 @@ public class Board {
     public final static int P1_COLOR = 1;
     public final static int P2_COLOR = 2;
     /** La taille n du plateau*/
-    private int n;
+    private static int n;
     /** La valeur max des cases*/
-    private int k;
+    private static int k;
     /** Le germe utilisé pour remplir les valeur du tableau*/
     private long seed;
 
     private static int[][] color;   //1 for player 1, 2 for player 2
     private static int[][] value;
-    private UnionFind scoring;
+    private static UnionFind scoring;
 
     /**
      * return current size of the board
      * @return
      */
-    public int getN() {
+    public static int getN() {
         return n;
     }
 
@@ -38,7 +38,7 @@ public class Board {
      * get k value (k decide what is highest score possible in one case)
      * @return
      */
-    public int getK() {
+    public static int getK() {
         return k;
     }
 
@@ -70,7 +70,7 @@ public class Board {
         return value[x][y];
     }
 
-    public UnionFind getScoring(){
+    public static UnionFind getScoring(){
         return scoring;
     }
 
