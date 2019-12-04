@@ -19,16 +19,6 @@ public class Game {
     }
 
     /**
-     * Print the list of cells in the same group as the cell in parameter.
-     * @param x
-     * @param y
-     */
-    public void afficherComposante(int x, int y){
-        int[][] list = getGroupOf(x,y);
-        //ToDO print
-    }
-
-    /**
      * Return an array of the cases contained in the same group as (x,y)
      * @return An array of point (int x, int y) of size: int[2][n]
      */
@@ -46,6 +36,10 @@ public class Game {
         }
     }
 
+    /*
+     * 1) MAIN GAME METHODS
+     */
+
     /**
      * Turn done by one of the two players
      * @param p
@@ -53,24 +47,24 @@ public class Game {
     public void playerTurn(Player p){
         System.out.println("**** Tour de joueur "+p.getColor()+" ("+this.board.intToColor(p.getColor())+") ****");
         //scan player's answer and store it
-        int[] coord = new int[2];
+        int[] coord = new int[4];
 
-        // If answer incorrect, repeat
+        // CHECK INFO BEFORE PLAYING?
+        checkInfo(coord);
+
+        // ANSWER
+        // If answer not valide, repeat
         do{
             Scanner sc = new Scanner(System.in);
-            System.out.println("Entrez les coordonnées de la case: ");
-
-            int i = 0;
-            while (sc.hasNextInt() && i < 2) {                //Browse each value of the current line
-                coord[i] = sc.nextInt();                      // Fill score board
-                i++;
-            }
+            System.out.println("Entrez les coordonnées de la case: ");               //Browse each value of the current line
+            coord[0] = sc.nextInt();             //Browse each value of the current line
+            coord[1] = sc.nextInt();
         }while(!acceptedAnswer(coord[0], coord[1]));
 
         //Color case with player's color
         this.board.colorerCase(coord[0],coord[1],p.getColor());
         this.board.neighborUnion(coord[0],coord[1]);
-
+        this.board.printValueBoard();
         this.board.printBoard();
     }
 
@@ -84,8 +78,13 @@ public class Game {
         this.board.printSetBoard();
 
         int player1FinalSet = 0;
+        int player1RootId = -1;
         int player2FinalSet = 0;
+        int player2RootId = -1;
         int tmp;
+
+
+
         //Check which is the biggest set size for each player
         for(int i=0; i<this.board.getN(); ++i){
             for(int j=0; j<this.board.getN(); ++j){
@@ -93,12 +92,14 @@ public class Game {
                 if(Board.getColor(i,j)==1){
                     if(player1FinalSet < tmp){
                         player1FinalSet = tmp;
+                        player1RootId = this.board.getScoring().getParentIdSet()[i][j].getId();
 
                     }
                 }
                 else{
                     if(player2FinalSet < tmp){
                         player2FinalSet = tmp;
+                        player2RootId = this.board.getScoring().getParentIdSet()[i][j].getId();
                     }
 
                 }
@@ -107,29 +108,91 @@ public class Game {
         System.out.println("Plus grand nombre de cases connectées pour Joueur 1: "+player1FinalSet);
         System.out.println("Plus grand nombre de cases connectées pour Joueur 2: "+player2FinalSet);
 
+        //FinalScore
+        int scoreP1 = 0;
+        int scoreP2 = 0;
 
-        System.out.println("Calcul des scores non implémentés :(");
+        for(int i=0; i<this.board.getN(); ++i){
+            for(int j=0; j<this.board.getN(); ++j){
+                if(Board.getColor(i,j)==1){
+                    if(player1RootId == this.board.getScoring().getParentIdSet()[i][j].getId()){
+                       scoreP1 += Board.getValue(i,j);
+
+                    }
+                }
+                else{
+                    if(player2RootId == this.board.getScoring().getParentIdSet()[i][j].getId()){
+                        scoreP2 += Board.getValue(i,j);
+                    }
+
+                }
+            }
+        }
+
+        System.out.println("Score de Joueur 1: "+scoreP1);
+        System.out.println("Score de Joueur 2: "+scoreP2);
+
+        if(scoreP1 > scoreP2){
+            System.out.println("Joueur 1 Gagnant!");
+        }else if(scoreP2 > scoreP1){
+            System.out.println("Joueur 2 Gagnant!");
+        }else{
+            System.out.println("Egalité!");
+        }
     }
 
 
     /**
-     *  Check whether the coordinates choosen by user are corrects
-     * @param x
-     * @param y
-     * @return
+     * Check whether the player wants info on composantes or continue playing
+     * @param coord
      */
-    public boolean acceptedAnswer(int x, int y){
-        if(x >= this.board.getN() || x < 0 || y >= this.board.getN() || y < 0 ){
-            System.out.println("Cette case est hors du plateau.");
-            return false;
-        }
-        else{
-            if (Board.getColor(x, y) != 0) {
-                System.out.println("Cette case est déjà colorée, veuillez en choisir une autre.");return false;
+    private void checkInfo(int[] coord) {
+        int info = 0;
+        do{
+            Scanner scInfo = new Scanner(System.in);
+            System.out.println("Voulez vous afficher une composante? (taper 1)");
+            System.out.println("Voulez vous afficher le score d'une composante? (taper 2)");
+            System.out.println("Voulez vous savoir si une case relie deux composantes? (taper 3)");
+            System.out.println("Continuer? (taper 0)");
+            if(scInfo.hasNextInt()){
+                info = scInfo.nextInt();
+                switch(info){
+                    case 0:
+                        break;
+                    case 1:
+                        askUserAnswer(coord);
+                        afficherComposante(coord[0], coord[1]);
+                        break;
+                    case 2:
+                        askUserAnswer(coord);
+                        afficherScore(coord[0], coord[1], Board.getColor(coord[0], coord[1]));
+                        break;
+                    case 3:
+                        askUserAnswer(coord);
+                        relierComposante(coord[0], coord[1]);
+                        break;
+                    default:
+                        System.out.println("Réponse non valide.");
                 }
-        }
-        return true;
+            }else{
+                System.out.println("Réponse non valide.");
+            }
+        }while(info != 0);
     }
+
+    /**
+     * Asks the player to give a case to play on
+     * @param coord
+     */
+    private void askUserAnswer(int[] coord) {
+        do {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Entrez les coordonnées de la case: ");               //Browse each value of the current line
+            coord[0] = sc.nextInt();             //Browse each value of the current line
+            coord[1] = sc.nextInt();
+        } while (!acceptedInfoAnswer(coord[0], coord[1]));
+    }
+
 
     /**
      * Count remaining non-colored cases
@@ -148,5 +211,145 @@ public class Game {
         return white;
     }
 
+    /*
+     * 2) PRINT METHOD
+     */
+
+    /**
+     * Print the list of cells in the same group as the cell in parameter.
+     * @param x
+     * @param y
+     */
+    public void afficherComposante(int x, int y){
+        int[][] list = getGroupOf(x,y);
+        //TODO print
+    }
+
+    /**
+     *  Print the current score of a composante
+     * @param x
+     * @param y
+     * @param color
+     */
+    private void afficherScore(int x, int y, int color){
+        int score = 0;
+        if(color == Board.EMPTY_COLOR){
+            score = Board.getValue(x, y);
+        }else {
+            int tmp = this.board.getScoring().getParentIdSet()[x][y].getId();
+            System.out.println(tmp);
+            for (int i = 0; i < this.board.getN(); ++i) {
+                for (int j = 0; j < this.board.getN(); ++j) {
+                    if (Board.getColor(i, j) == color) {
+                        if (tmp == this.board.getScoring().getParentIdSet()[i][j].getId()) {
+                            score += Board.getValue(i, j);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.printf("Score de la composante de ("+x+","+y+"): "+score+". ");
+        if(color == 0){
+            System.out.println("Cette case est libre");
+        }else{
+            System.out.println("Cette case est colorée par le joueur n°"+color+".");
+        }
+    }
+
+    /*
+     *  3) VERIFICATIONS METHODS
+     */
+
+    /**
+     *  Check whether the coordinates choosen by user are corrects
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean acceptedAnswer(int x, int y){
+        if(x >= this.board.getN() || x < 0 || y >= this.board.getN() || y < 0 ){
+            System.out.println("Cette case est hors du plateau.");
+            return false;
+        }
+        else{
+            if (Board.getColor(x, y) != 0) {
+                System.out.println("Cette case est déjà colorée, veuillez en choisir une autre.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     *  Check whether the coordinates choosen by user are corrects
+     *  Version for info
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean acceptedInfoAnswer(int x, int y){
+        if(x >= this.board.getN() || x < 0 || y >= this.board.getN() || y < 0 ){
+            System.out.println("Cette case est hors du plateau.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *Check  if a case links two composantes and whose composantes they belong to
+     * @param x
+     * @param y
+     * @return
+     */
+    private boolean relierComposante(int x, int y){
+        if(Board.getColor(x,y)==Board.EMPTY_COLOR){
+            int i = 0;
+            int j = 0;
+            if(x+1<this.board.getN()){
+                if(Board.getColor(x+1,y) == 1){
+                    i++;
+                }else if(Board.getColor(x+1,y) == 2){
+                    j++;
+                }
+            }
+            if(y+1<this.board.getN()){
+                if(Board.getColor(x,y+1) == 1){
+                    i++;
+                }else if(Board.getColor(x,y+1) == 2){
+                    j++;
+                }
+            }
+            if(x-1>=0){
+                if(Board.getColor(x-1,y) == 1){
+                    i++;
+                }else if(Board.getColor(x-1,y) == 2){
+                    j++;
+                }
+            }
+            if(y-1>=0){
+                if(Board.getColor(x,y-1) == 1){
+                    i++;
+                }else if(Board.getColor(x,y-1) == 2){
+                    j++;
+                }
+            }
+            if(i >=2){
+                System.out.println("("+x+","+y+") relie deux composantes apparetenant au joueur 1.");
+                return true;
+            }
+            if(j >=2){
+                System.out.println("("+x+","+y+") relie deux composantes apparetenant au joueur 2.");
+                return false;
+            }
+            else{
+                System.out.println("("+x+","+y+") ne relie aucunes composantes de même couleurs.");
+
+            }
+        }else{
+            System.out.println("("+x+","+y+") est déja colorée.");
+
+        }
+        return false;
+    }
 
 }

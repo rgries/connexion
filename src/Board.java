@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Board {
 
-    public final static int EMPTY_COLOR = -1;
+    public final static int EMPTY_COLOR = 0;
     public final static int P1_COLOR = 1;
     public final static int P2_COLOR = 2;
     /** La taille n du plateau*/
@@ -70,6 +70,11 @@ public class Board {
         return value[x][y];
     }
 
+    public UnionFind getScoring(){
+        return scoring;
+    }
+
+
     public Board RemplirGrilleAleatoire(int n, int k){
         //TODO exception when n not an int or negative.
         //TODO maybe should be create by Game instead
@@ -93,6 +98,9 @@ public class Board {
                 value[i][j] = rand.nextInt(k+1);
             }
         }
+        //Part 2: Union between compatible neighbor
+        b.printValueBoard();
+        b.connectColors();
         return b;
     }
 
@@ -165,19 +173,18 @@ public class Board {
                    throw new IllegalArgumentException("La valeur de la case ("+i+","+j+") doit être entre 0 et 2");
                }
                coloredNode[i][j] = new AscendingNode(k,i,j);            // Create AscendingNode for each color and fill the future idParentSet
-               System.out.printf(" "+b.color[i][j]);                    //Print infos : To be removed
                j++;
                k++;
            }
            i++;
            j=0;
-           System.out.println(" ");  //To be removed
        }
        //Create unionFind using idParentSet pre-filled
        b.scoring = new UnionFind(coloredNode);
 
        //Part 2: Union between compatible neighbor
        b.connectColors();
+       b.printValueBoard();
        return b;
     }
 
@@ -185,11 +192,9 @@ public class Board {
      *  Connect colors and print the board
      */
     public void connectColors() {
-        int i;
-        int j;
         System.out.println("Affichage du plateau...");
-        for(i=0;i<this.n; ++i){
-            for(j=0;j<this.n; ++j){
+        for(int i=0;i<this.n; ++i){
+            for(int j=0;j<this.n; ++j){
                 neighborUnion(i, j);
                 System.out.printf("["+intToColor(color[i][j])+"("+i+";"+j+")] ");  // print infos: To be removed
             }
@@ -208,6 +213,19 @@ public class Board {
         for(i=0;i<this.n; ++i){
             for(j=0;j<this.n; ++j){
                 System.out.printf("["+intToColor(color[i][j])+"("+i+";"+j+")] ");
+            }
+            System.out.println("  ");
+        }
+    }
+
+    /**
+     *  Print the current score board
+     */
+    public void printValueBoard() {
+        System.out.println("Valeurs du plateau....");
+        for(int i=0;i<this.n; ++i){
+            for(int j=0;j<this.n; ++j){
+                System.out.printf("["+this.value[i][j]+"]");
             }
             System.out.println("  ");
         }

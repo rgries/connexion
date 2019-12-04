@@ -41,11 +41,8 @@ public class Player {
      * such as int[0][n] is the 'x' of these cells, and int[1][n] the 'y' of these cells.
      */
     public int[][] getGroupOf(int x, int y){
-        //TODO
-        //AscendingNode a = new AscendingNode();
-        AscendingNode parent;
-        int[][] res = new int[1][1];
-
+        int[][] res = new int[2][1];
+        // TODO getgroupof()
         return res;
 
     }
