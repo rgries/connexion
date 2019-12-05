@@ -25,6 +25,10 @@ public class Player {
         return this.color;
     }
 
+    public int getScore(){
+        return this.score;
+    }
+
 
     public void setScore(int s){
         score = s;

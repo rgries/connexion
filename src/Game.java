@@ -66,6 +66,7 @@ public class Game {
         this.board.neighborUnion(coord[0],coord[1]);
         this.board.printValueBoard();
         this.board.printBoard();
+
     }
 
     /**
@@ -83,8 +84,6 @@ public class Game {
         int player2RootId = -1;
         int tmp;
 
-
-
         //Check which is the biggest set size for each player
         for(int i=0; i<this.board.getN(); ++i){
             for(int j=0; j<this.board.getN(); ++j){
@@ -93,7 +92,6 @@ public class Game {
                     if(player1FinalSet < tmp){
                         player1FinalSet = tmp;
                         player1RootId = this.board.getScoring().getParentIdSet()[i][j].getId();
-
                     }
                 }
                 else{
@@ -126,7 +124,8 @@ public class Game {
                 }
             }
         }
-
+        player1.setScore(scoreP1);
+        player2.setScore(scoreP2);
         System.out.println("Score de Joueur 1: "+scoreP1);
         System.out.println("Score de Joueur 2: "+scoreP2);
 
@@ -262,6 +261,16 @@ public class Game {
                     }
                 }
             }
+            // MAJ score joueur
+            if(color == Board.P1_COLOR){
+                if(player1.getScore() < score){
+                    player1.setScore(score);
+                }
+            }else{
+                if(player2.getScore() < score){
+                    player2.setScore(score);
+                }
+            }
         }
         System.out.printf("Score de la composante de ("+x+","+y+"): "+score+". ");
         if(color == 0){
@@ -316,7 +325,7 @@ public class Game {
      * @param y
      * @return
      */
-    private boolean relierComposante(int x, int y){
+    private void relierComposante(int x, int y){
         if(Board.getColor(x,y)==Board.EMPTY_COLOR){
             int i = 0;
             int j = 0;
@@ -349,14 +358,12 @@ public class Game {
                 }
             }
             if(i >=2){
-                System.out.println("("+x+","+y+") relie deux composantes apparetenant au joueur 1.");
-                return true;
+                System.out.println("("+x+","+y+") relie deux composantes appartenant au joueur 1.");
             }
             if(j >=2){
-                System.out.println("("+x+","+y+") relie deux composantes apparetenant au joueur 2.");
-                return false;
+                System.out.println("("+x+","+y+") relie deux composantes appartenant au joueur 2.");
             }
-            else{
+            if(i<2 && j<2){
                 System.out.println("("+x+","+y+") ne relie aucunes composantes de même couleurs.");
 
             }
@@ -364,7 +371,6 @@ public class Game {
             System.out.println("("+x+","+y+") est déja colorée.");
 
         }
-        return false;
     }
 
 }

@@ -29,6 +29,11 @@ public class UnionFind {
         }
     }
 
+    /**
+     * Return the coordinate of a node within parentIdSet
+     * @param node
+     * @return
+     */
     private int[] search(AscendingNode node) {
         for (int i = 0; i < this.parentIdSet.length; i++){
             for (int j = 0; j < this.parentIdSet.length; j++) {

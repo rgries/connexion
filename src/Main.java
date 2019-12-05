@@ -2,19 +2,30 @@ import structure.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        play();
-    }
-
-    private static void play() throws IOException {
         Board b = new Board();
-        b = b.RemplirGrilleFicher(new File("C:/Users/Geppetto/connexion/src/test.txt"));
-        //b = b.RemplirGrilleAleatoire(5,3);
+
+        try {
+            try{
+                b = b.RemplirGrilleFicher(new File(args[0]));
+            }catch(FileNotFoundException e0){
+                System.out.println("Chemin de fichier non valide:");
+                b = b.RemplirGrilleAleatoire(5,3);
+
+            }
+
+        }
+        catch(ArrayIndexOutOfBoundsException e1){   //Aucun fichier entrée
+            System.out.println("Aucun fichier:");
+            b = b.RemplirGrilleAleatoire(5,3);
+        }
 
         jouerDeuxHumains(b);
     }
+
 
     private static void jouerDeuxHumains(Board b) {
         Player p1 = new Player(b.P1_COLOR);

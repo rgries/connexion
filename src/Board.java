@@ -78,6 +78,7 @@ public class Board {
     public Board RemplirGrilleAleatoire(int n, int k){
         //TODO exception when n not an int or negative.
         //TODO maybe should be create by Game instead
+        System.out.println("*** Remplissage aléatoire du plateau  ***");
         Board b = new Board();
         b.n = n;
         b.k = k;
@@ -111,6 +112,7 @@ public class Board {
      * @throws IOException
      */
    public Board RemplirGrilleFicher(File f) throws IOException {
+       System.out.println("*** Remplissage du plateau selon le fichier... ***");
         Board b = new Board();
         Scanner currentLine =  new Scanner(f);
         String l = currentLine.nextLine();
