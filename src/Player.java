@@ -21,15 +21,26 @@ public class Player {
         score = 0;
     }
 
+    /**
+     *  return the color of current player
+     * @return
+     */
     public int getColor(){
         return this.color;
     }
 
+    /**
+     * return previously calculated score of current player
+     * @return
+     */
     public int getScore(){
         return this.score;
     }
 
-
+    /**
+     * change current score to s value
+     * @param s
+     */
     public void setScore(int s){
         score = s;
     }

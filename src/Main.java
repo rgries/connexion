@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Board b = new Board();
-
+        // choix entre grille pré-faite ou aléatoire
         try {
             try{
                 b = b.RemplirGrilleFicher(new File(args[0]));
@@ -27,6 +27,10 @@ public class Main {
     }
 
 
+    /**
+     *  Initialize the game according to the generated board
+     * @param b
+     */
     private static void jouerDeuxHumains(Board b) {
         Player p1 = new Player(b.P1_COLOR);
         Player p2 = new Player(b.P2_COLOR);

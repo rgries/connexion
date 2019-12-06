@@ -321,6 +321,7 @@ public class Game {
 
     /**
      *Check  if a case links two composantes and whose composantes they belong to
+     * check before hand if the previous/following cell is still within the board
      * @param x
      * @param y
      * @return
